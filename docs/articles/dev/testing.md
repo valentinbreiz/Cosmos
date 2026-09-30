@@ -32,6 +32,7 @@ dotnet test src/tests/Cosmos.Kernel.Tests.System   # the kernel library tests
   - `LoadPlugs_ShouldIgnoreClassesWithoutPlugAttribute`
   - `LoadPlugs_ShouldHandleOptionalPlugs`
   - `FindPluggedAssemblies_ShouldReturnMatchingAssemblies`
+- **Cosmos.Tests.SourceGenerators**: Runs `CosmosEntryPointGenerator` on in-memory compilations and checks the generated entry point, the driver manifest and the `COSMOSGEN` diagnostics exactly; `FeatureParityTests` keeps `DriverFeature`, `KernelFeatures` and the test stubs in step, and `ReferencedDriverTests` covers drivers from referenced assemblies, public and under an `InternalsVisibleTo` grant.
 - **Cosmos.Tests.Patcher**: Ensures that plugs are applied successfully to target methods and types.
   - `PatchAssembly_ShouldSkipWhenNoMatchingPlugs`
   - `PatchObjectWithAThis_ShouldPlugInstanceCorrectly`
@@ -74,6 +75,10 @@ Kernel integration tests compile a real NativeAOT kernel, boot it in QEMU, and c
 |-------|-------|-------------|
 | **HelloWorld** | 3 | Basic arithmetic, boolean logic, integer comparison |
 | **Memory** | 85 | Boxing/unboxing, memory allocation, collections, memory copy, GC |
+| **Drivers** | 33 | Driver kit over the synthetic bus: manifest, arbitration, publish, interrupts, deferred work, teardown, children, a display reaching the display manager; on x64, the PCI host and the E1000E driver on q35's default NIC |
+| **Pci** | 9 | The legacy PCI manager's configuration space reads, and the driver kit's PCI host node and its children through `DriverInfo` and the nodes' `PciAccess` |
+| **Virtio** | 12 | The virtio drivers over the driver kit on both transports: the net and input nodes bound, the interface consumed with its link, MAC and interrupt, and the PCI function or the MMIO slot bound by its transport driver |
+| **Graphic** | 24 | The 2D canvas, fonts and images on every cell; the display manager and the primary display per cell; the virtio-gpu display driver on the virtio-gpu cells; the VMware SVGA II adapter through its facets and its SVGA3D FIFO wire tests on vmware-svga |
 
 #### HelloWorld Tests
 
@@ -128,6 +133,62 @@ Kernel integration tests compile a real NativeAOT kernel, boot it in QEMU, and c
 - `GC_DictSurvival`, `GC_PageAccounting`, `GC_DependentHandle`
 - `GC_DependentHandleCleanup`, `GC_HandleStoreIntegrity`, `GC_PinnedHeapReuse`
 
+#### Drivers Tests
+
+The suite is two projects. `tests/Kernels/Cosmos.Kernel.Tests.Drivers` is the kernel: the harness (`Kernel.cs` and `TestKeyboardConsumer`) with an `InternalsVisibleTo` grant from `Cosmos.Kernel.HAL`, which it spends on its consumer and, in the hardware group, on reaching the shipped E1000E's state through `DriverEngine.Nodes`: `TestKeyboardConsumer` derives from the internal `KeyboardConsumer` and is installed through the internal `DeviceRegistry.SetConsumer` in `BeforeRun`, replacing the ring's own keyboard consumer for the run, which is the one-consumer-per-kind rule at work. `tests/Kernels/Cosmos.Kernel.Tests.Drivers.Library` holds every `[Driver]` class the suite drives and the state and identity types they need: a driver assembly (`<CosmosDriverAssembly>true</CosmosDriverAssembly>`, listed in `CosmosDriverAssemblyNames`) with no grant from any project, written over the public seam only, so its compiling is the proof that a third party can write each of those drivers. The kernel references the library, drives the library's drivers through the synthetic bus with no hardware behind any node and the shipped drivers on what the machine carries (the Hardware group below), and waits for the kit through `SyntheticBus.WaitForQueuedJobs`. It builds with `CosmosEnableMouse` off and with one `CosmosDriverExclude` and one `CosmosDriverInclude` item naming the library's types, so the manifest policy is under test too. Every assertion reads `DriverInfo` or the suite's own drivers and consumer, never the serial log.
+
+Manifest order for the library's drivers follows the referenced-assembly rule: the generator sorts them by assembly name and then by full type name, both ordinal, after the kernel's own drivers. `Manifest_Order_ReferencedByTypeName` asserts that `TieFirstDriver` precedes `TieSecondDriver` on that rule alone (`F` sorts before `S`); where the two are declared plays no part. `Interrupt_WorkItemDeferredToWorker` proves deferral without asking the engine where it ran: the handler notes the work item's run count as it returns, with interrupts still disabled, so an unchanged count means the item did not run inside `RaiseInterrupt`, and the run seen after `WaitForQueuedJobs` is the worker's.
+
+**Manifest (6 tests):**
+- `Manifest_HighPriorityDriver_Present`, `Manifest_MouseFeatureDriver_Absent`, `Manifest_ExcludedDriver_Absent`
+- `Manifest_OptInDriver_Present`, `Manifest_OptOutDriver_Absent`, `Manifest_Order_ReferencedByTypeName`
+
+**Engine (2 tests):**
+- `Engine_Started_WithWorker`, `BootPath_NodeFromConstructor_Bound`
+
+**Arbitration (5 tests):**
+- `Arbitration_ByPriority`, `Arbitration_BySpecificity`, `Arbitration_TieByManifestOrder`
+- `Decline_UnwindsResources`, `ThrowingProbe_RecordedAsFailed`
+
+**Keyboard device (7 tests):**
+- `Publish_ReachesConsumer`, `WindowAndDma_Contents`
+- `Interrupt_HandlerReadsWindow_ReportsKey`, `Interrupt_WorkItemDeferredToWorker`, `Interrupt_MaskUnmask`
+- `Periodic_FiresAtLeastThreeTimes`, `BlockingHandler_FaultRecorded`
+
+**Display (1 test):**
+- `Publish_Display_ReachesDisplayManager`: the library's `DisplayDriver` publishes a `DisplayState`, a display in one fixed 64x32 mode with no framebuffer; `DisplayManager.Count` grows by one, the display is found by its node path in `DriverInfo` with `IsConsumed`, reports the driver's mode, is the primary (a driver display beats the firmware one) and yields the state as a facet but no `IDisplayModes`; after the retraction it has left the manager and the published list, has no facet, and the primary is the firmware display again, or none
+
+**Retract (3 tests):**
+- `Retract_DetachOrderAndAccounting`, `Retract_DriverThreadExited`, `Retract_SinkReportDiscarded`
+
+**Children (3 tests):**
+- `Children_PublishedFromProbe`, `UnmatchedNode_UnboundWithNoOffers`, `Children_RetractedWithParent`
+
+**Diagnostics (1 test):**
+- `DriverInfo_OutOfRange_ReturnsFalse`
+
+**Hardware (5 tests):**
+- `Hardware_PciHost_Bound`, `Hardware_E1000E_NodeBound`, `Hardware_E1000E_DeviceConsumed`
+- `Hardware_E1000E_LinkUp`, `Hardware_E1000E_Transmit`
+
+The hardware group runs the shipped drivers on real (emulated) hardware without a profile of its own: QEMU's q35 adds a default e1000e whenever a cell passes no `-netdev`, so the suite's bare x64 cell already carries the controller, while virt's default NIC is a virtio-net-pci function that the kit's `VirtioNetDriver` binds, so the four E1000E tests skip on arm64 with `no e1000e on this machine`. Their gate is a `DriverInfo` node with `BusName` `pci` whose `Description` starts with `8086:10d3`. `Hardware_PciHost_Bound` is unconditional: a `platform` node whose description contains `pci-host-` is `Bound` by `PciHostDriver`. `Hardware_E1000E_NodeBound` reads that the function is `Bound` by `E1000EDriver` with one published device and at least seven held resources (the register window, the four DMA buffers, the drain work item and its periodic registration, plus the interrupt handle when the line connected); `Hardware_E1000E_DeviceConsumed` finds a published device of kind `Network` at that node path with `IsConsumed` true and a non-zero `NetworkManager.MacAddress`; `Hardware_E1000E_LinkUp` polls `NetworkManager.LinkUp` for up to 2 s; and `Hardware_E1000E_Transmit` spends the kernel's HAL grant on reaching the node's `E1000EState` through `DriverEngine.Nodes`, sends a 60-byte broadcast frame through `NetworkManager.Send` and asserts `FramesTransmitted` grew.
+
+#### Pci Tests
+
+`tests/Kernels/Cosmos.Kernel.Tests.Pci` keeps its six configuration space tests over the legacy PCI manager and adds three that read the driver kit, on both architectures (arm64's EDK2 boot carries ACPI, so MCFG is present and the ECAM host node exists there): `Host_PlatformNode_BoundByPciHostDriver` (a `platform` node whose description contains `pci-host-` is `Bound` with `DriverName` `PciHostDriver`), `Host_PublishesPciNodes` (at least one `pci` node has the host's path as `ParentPath`, and every such node has `ResourceCount` 6 and an `InterruptCount` of its legacy line plus one source per described message: the node is resolved in `DriverEngine.Nodes` through the kernel's HAL grant, its `PciAccess` read, and the count checked against `1 + Math.Min(pci.MessageInterruptCount, PciHostAccess.MaxDescribedMessages)`, 32 at most, when `pci.IsMsiXCapable` and against 1 otherwise; the first source's `Describe()` starts with `line`, and on an MSI-X capable function the second's equals `message 0 of ` followed by the table size, compared ordinally) and `Host_NodeCount_MatchesLegacyScan` (the `pci` nodes number at least `PciManager.Count`). Both default cells carry an MSI-X capable function (q35's e1000e, virt's virtio-net-pci) and functions without the capability (the host bridge), so the per-node formula covers every mix; the project suppresses `COSMOS0003`, since `DeviceNode` and `PciAccess` are experimental.
+
+#### Virtio Tests
+
+`tests/Kernels/Cosmos.Kernel.Tests.Virtio` proves the virtio drivers in `Cosmos.Kernel.Drivers` over both transports with the same assertions. Its two profiles attach a virtio NIC, keyboard and mouse to every cell: `virtio-pci` on x64 and arm64 (the arm64 cell launches with `gic-version=3`, since the ITS is what routes the function's MSI-X messages), and `virtio-mmio` on arm64 alone, through the virt machine's virtio-mmio window (q35 has none). Which transport a cell presents is a property of the profile, not of the architecture, so the same kernel serves both arm64 cells and detects the transport at run time: `BeforeRun` captures the virtio-net node (a `DriverInfo` node with `BusName` `virtio` whose `Description` starts with `type 1 `), the virtio-input nodes (`type 18 `), and the PCI function node (`BusName` `pci`, `Description` starting with `1af4:1041` or `1af4:1000`), whose presence makes the cell a PCI cell. The kernel keeps a HAL grant for one purpose, reaching a node's binding state through `DriverEngine.Nodes` as the Drivers suite does, and suppresses `COSMOS0003`.
+
+The twelve tests: `Net_DriverBound` (the net node is `Bound` by `VirtioNetDriver`), `Net_TransportMatchesCell` (its `Path` starts with `virtio:pci:` on the PCI cell and `virtio:mmio:` otherwise), `Net_DeviceReady` (a published `Network` device at the node's path with `IsConsumed` true, `NetworkManager.DeviceCount` at least 1 and `NetworkManager.Ready`), `Net_LinkUp` (`NetworkManager.LinkUp`: QEMU's user backend reports the link up at once), `Net_MacAddressProgrammed` (`NetworkManager.MacAddress` not null and not all zero), `Net_InterruptConnected` (the node's `VirtioNetState.HasInterrupt` is true and `IsPolling` false: every cell routes one source, MSI-X over PCI, the GIC line over MMIO), `Input_KeyboardBound` and `Input_MouseBound` (a `type 18` node `Bound` by `VirtioInputDriver` whose published `Keyboard`, respectively `Pointer`, device is consumed), then two per transport. On the PCI cell, `Pci_FunctionBoundByTransport` (the function node is `Bound` by `VirtioPciTransportDriver` with `ChildCount` 1) and `Pci_Version1Negotiated` (`VirtioNetState.Version1Negotiated`; QEMU's virtio-mmio is legacy by default, so the MMIO cell does not assert it), skipped elsewhere with `this cell presents virtio over MMIO`. On the MMIO cell, `Mmio_SlotBoundByTransport` (a `platform` node whose `Description` contains `virtio,mmio` is `Bound` by `VirtioMmioTransportDriver` with `ChildCount` 1, the assertion that catches a lost MMIO window) and `Mmio_AnyLayoutNegotiated` (`VirtioNetState.AnyLayoutNegotiated` on the legacy device, whose `any_layout` property QEMU defaults on), skipped elsewhere with `this cell presents virtio over PCI`. The Network suite's `virtio-net-pci` and `virtio-net-mmio` cells exercise the same driver's data path with no test change.
+
+#### Graphic Tests
+
+`tests/Kernels/Cosmos.Kernel.Tests.Graphic` runs on three profiles, `bare`, `vmware-svga` (x64 only, the adapter is programmed through port I/O) and `virtio-gpu` (a virtio-gpu-pci added beside the machine's default adapter, on both architectures), and registers the same 24 tests on every cell: a cell-specific test runs where its device is and skips elsewhere, `no virtio-gpu device on this cell, needs the virtio-gpu profile` or `VMware SVGA II adapter not present, needs the vmware-svga profile`. The cell is read in `BeforeRun` from the device tree, never from the profile name or from which driver bound, so a display driver that failed to bind fails the suite instead of skipping it: a `pci` node whose `Description` starts with `15ad:0405` marks the vmware-svga cell, a `pci` node starting with `1af4:1050` or a `virtio` node starting with `type 16 ` marks the virtio-gpu cell, and neither marks bare. The suite reaches the driver states in `Cosmos.Kernel.Drivers` through the facets of `DisplayManager.Primary` and holds no grant; the project suppresses `COSMOS0003` for the facets.
+
+The 2D tests (8), every cell: `PCScreenFont_ChangeFont`, `Bitmap_Basic`, `Png_Decode`, `Ttf_Render`, `ColorClass_Basic`, `Canvas_Basic`, `VirtualCanvas_Basic`, `Canvas_CopyPixels_Overlap`. The display tests (4), every cell: `Display_PrimaryPresent` (a primary exists, the console's canvas has its width and a `Name` starting with its `DriverName`), `Display_PrimaryMatchesCell` (bare: the primary is the firmware display and it is the only one; virtio-gpu: `VirtioGpuDriver`'s display is primary beside the firmware one; vmware-svga: `VmwareSvgaDriver`'s display is the only one and `DriverInfo` lists no display without a node path, the firmware display having been retired), `Display_ListedInDriverInfo` (every display of the manager is a consumed `Display` device in `DriverInfo`, with a null `NodePath` exactly for the firmware one) and `Display_ModeRequest_FollowsFacet` (`Canvas.GetFullScreen(new Mode(640, 480, ColorDepth.ColorDepth32))` reports 640x480 when the primary offers `IDisplayModes` and the real size otherwise; it runs after the facet tests, with only `Canvas3D_Discovery` after it, since it switches the mode they measure). `VirtioGpu_DriverState` (1), on the virtio-gpu cells: the primary yields a `VirtioGpuState` that is not faulted, has an interrupt or polls, counts at least one scanout, matches the primary's size and sent the probe's four commands; one `Display()` of the console's canvas grows `FlushCount` by one and `CommandsSent` by two. The SVGA tests (9), on vmware-svga: `Svga_AdapterFacet` (`ISvgaAdapter` with capabilities, `FifoMin` below `FifoMax`, no 3D negotiated on QEMU, no `ICanvas3DFactory`, the scanout enabled since the console programmed a mode), `Svga_DisplayModesFacet` (`IDisplayModes` listing 1024x768x32, the default the console chose), `Svga_HardwareCursorFacet` (`IHardwareCursor`; `TryDefine` returns false on QEMU, which has no alpha cursor; `Set(1, 1, false)` does not throw), then the FIFO wire tests, each of which captures `NextCommand`, reads the commands its calls wrote back dword by dword, and rewinds: `Canvas3D_SceneSetup_Fifo` opens the block by re-programming the display's own mode (so the FIFO is back at its start), turning the scanout off through the facet (so the host consumes nothing) and creating the SVGA3D canvas through `CreateCanvas3D`, which the later tests share, and pins the scene setup (context, colour and depth targets sized to the canvas, the two render target binds, viewport, depth range, seven render states, the untextured stage); `Canvas3D_MeshUpload_Fifo` (per stream a `SURFACE_DEFINE` of a buffer and a `SURFACE_DMA` from the framebuffer region, surfaces 3, 4 and 5 for the cube), `Canvas3D_MeshValidation`, `Canvas3D_DrawCube_Fifo`, `Canvas3D_CameraCaching_Fifo` and `Canvas3D_DisposedTexture_Rejected` (`CreateTexture` defines and uploads an A8R8G8B8 surface, `Dispose` destroys it, and a mesh mapping it is rejected without a write) follow, and the last one restores the scanout. `Camera3D_Defaults` and `Canvas3D_Discovery` (2), every cell: `Canvas.GetFullScreen()` is not a `Canvas3D` on any CI cell. Per cell on x64: bare 14 passed and 10 skipped, vmware-svga 23 passed and 1 skipped, virtio-gpu 15 passed and 9 skipped; arm64 runs bare and virtio-gpu. The UART log holds every cell's boot in order, with the `[Display] primary` line of each.
+
 ### Running Kernel Tests
 
 #### From VS Code
@@ -177,6 +238,9 @@ dotnet run --project tests/Cosmos.TestRunner.Engine/Cosmos.TestRunner.Engine.csp
 |-------|-----|-------|
 | HelloWorld | 60 s | 90 s |
 | Memory | 180 s | 300 s |
+| Drivers | 60 s | 120 s |
+| Pci | 60 s | 90 s |
+| Graphic | 60 s | 90 s |
 
 ### Output Formats
 
@@ -330,6 +394,7 @@ tests/
 ├── Cosmos.Tests.Build.Analyzer.Patcher/ # Unit tests: plug analyzer
 ├── Cosmos.Tests.Scanner/            # Unit tests: plug scanner
 ├── Cosmos.Tests.Patcher/            # Unit tests: IL patcher
+├── Cosmos.Tests.SourceGenerators/   # Unit tests: entry point and driver manifest generator
 ├── Cosmos.Tests.NativeWrapper/      # Runtime assets (no tests)
 ├── Cosmos.Tests.NativeLibrary/      # Native code for tests (no tests)
 └── Kernels/                         # Kernel test projects

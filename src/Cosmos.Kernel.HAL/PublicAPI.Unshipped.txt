@@ -114,3 +114,443 @@ Cosmos.Kernel.HAL.Vfs.VfsTimespec.TvNsec -> long
 Cosmos.Kernel.HAL.Vfs.VfsTimespec.TvSec -> long
 Cosmos.Kernel.HAL.Vfs.VfsTimespec.VfsTimespec() -> void
 Cosmos.Kernel.HAL.Vfs.VfsTimespec.VfsTimespec(long tvSec, long tvNsec) -> void
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.DeviceIdentity.Address.get -> string!
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.DeviceIdentity.BusName.get -> string!
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.DeviceIdentity.Describe() -> string!
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.DeviceMatch.Matches(Cosmos.Kernel.HAL.DriverKit.DeviceIdentity! identity) -> bool
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.DeviceMatch.Specificity.get -> int
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.Driver.Matches.get -> System.ReadOnlySpan<Cosmos.Kernel.HAL.DriverKit.DeviceMatch!>
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.Driver.Name.get -> string!
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.Driver.Probe(Cosmos.Kernel.HAL.DriverKit.DeviceBinding! binding) -> Cosmos.Kernel.HAL.DriverKit.ProbeResult
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.InterruptSource.Describe() -> string!
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.InterruptSource.DisconnectCore() -> void
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.InterruptSource.MaskCore() -> void
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.InterruptSource.TryConnectCore(Cosmos.Kernel.HAL.DriverKit.InterruptTrampoline! trampoline) -> bool
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.InterruptSource.UnmaskCore() -> void
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioTransport.ActivateQueue(ushort index, in Cosmos.Kernel.HAL.DriverKit.Virtio.VirtqueueLayout layout) -> bool
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioTransport.AfterReset() -> void
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioTransport.AssignConfigInterrupt(int entry) -> bool
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioTransport.AssignQueueInterrupt(ushort index, int entry) -> bool
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioTransport.DeviceType.get -> Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioTransport.InterruptEntryCount.get -> int
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioTransport.IsQueueReady(ushort index) -> bool
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioTransport.NotifyQueue(ushort index) -> void
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioTransport.ReadAndAcknowledgeInterrupt() -> Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioInterruptStatus
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioTransport.ReadConfig16(uint offset) -> ushort
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioTransport.ReadConfig32(uint offset) -> uint
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioTransport.ReadConfig8(uint offset) -> byte
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioTransport.ReadDeviceFeatures() -> ulong
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioTransport.ReadQueueMaxSize(ushort index) -> ushort
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioTransport.ReadStatus() -> byte
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioTransport.SupportsFeaturesOk.get -> bool
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioTransport.WriteConfig8(uint offset, byte value) -> void
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioTransport.WriteDriverFeatures(ulong features) -> void
+[COSMOS0003]abstract Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioTransport.WriteStatus(byte status) -> void
+[COSMOS0003]const Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioAccess.MaxQueues = 8 -> int
+[COSMOS0003]const Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioAccess.ResetPollMicroseconds = 10 -> uint
+[COSMOS0003]const Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioAccess.ResetTimeoutMilliseconds = 100 -> uint
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DetachCause
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DetachCause.ParentRetracted = 1 -> Cosmos.Kernel.HAL.DriverKit.DetachCause
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DetachCause.Retracted = 0 -> Cosmos.Kernel.HAL.DriverKit.DetachCause
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DetachReason
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DetachReason.Cause.get -> Cosmos.Kernel.HAL.DriverKit.DetachCause
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DetachReason.DetachReason() -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DetachReason.HardwarePresent.get -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding.AllocateDma(int length, int alignment) -> Cosmos.Kernel.HAL.DriverKit.DmaBuffer!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding.CreateEvent() -> Cosmos.Kernel.HAL.DriverKit.DeviceEvent!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding.CreateLock() -> Cosmos.Kernel.HAL.DriverKit.DeviceLock!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding.CreateWorkItem(System.Action! callback) -> Cosmos.Kernel.HAL.DriverKit.WorkItem!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding.Delay(uint microseconds) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding.DetachEvent.get -> Cosmos.Kernel.HAL.DriverKit.DeviceEvent!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding.Driver.get -> Cosmos.Kernel.HAL.DriverKit.Driver!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding.DriverState.get -> object?
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding.DriverState.set -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding.IsDetaching.get -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding.Log(string! message) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding.MapRegion(int resourceIndex, Cosmos.Kernel.HAL.DriverKit.RegionCaching caching) -> Cosmos.Kernel.HAL.DriverKit.DeviceRegion!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding.MapRegisters(int resourceIndex) -> Cosmos.Kernel.HAL.DriverKit.RegisterWindow!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding.Node.get -> Cosmos.Kernel.HAL.DriverKit.DeviceNode!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding.PublishBlockDevice(Cosmos.Kernel.HAL.Interfaces.Devices.IBlockDevice! device) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding.PublishChild(Cosmos.Kernel.HAL.DriverKit.DeviceIdentity! identity, Cosmos.Kernel.HAL.DriverKit.DeviceResource[]! resources, Cosmos.Kernel.HAL.DriverKit.InterruptSource![]! interrupts, object? access) -> Cosmos.Kernel.HAL.DriverKit.DeviceNode!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding.PublishDisplay(Cosmos.Kernel.HAL.DriverKit.Devices.IDisplay! display) -> Cosmos.Kernel.HAL.DriverKit.Devices.DisplaySink!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding.PublishKeyboard(Cosmos.Kernel.HAL.DriverKit.Devices.IKeyboard! keyboard) -> Cosmos.Kernel.HAL.DriverKit.Devices.KeyboardSink!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding.PublishNetwork(Cosmos.Kernel.HAL.DriverKit.Devices.INetworkInterface! network) -> Cosmos.Kernel.HAL.DriverKit.Devices.NetworkSink!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding.PublishPointer(Cosmos.Kernel.HAL.DriverKit.Devices.IPointer! pointer) -> Cosmos.Kernel.HAL.DriverKit.Devices.PointerSink!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding.RetractChild(Cosmos.Kernel.HAL.DriverKit.DeviceNode! child, bool hardwarePresent) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding.Sleep(uint milliseconds) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding.TryAllocateDma(int length, int alignment, Cosmos.Kernel.HAL.DriverKit.DmaConstraints constraints, out Cosmos.Kernel.HAL.DriverKit.DmaBuffer? buffer) -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding.TryRequestInterrupt(Cosmos.Kernel.HAL.DriverKit.InterruptSource! source, Cosmos.Kernel.HAL.DriverKit.InterruptHandler! handler, out Cosmos.Kernel.HAL.DriverKit.InterruptHandle? handle) -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding.TrySchedulePeriodic(uint intervalMilliseconds, Cosmos.Kernel.HAL.DriverKit.WorkItem! item) -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding.TryStartThread(string! name, System.Action! entry, out Cosmos.Kernel.HAL.DriverKit.DriverThread? thread) -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceBinding.Wait(Cosmos.Kernel.HAL.DriverKit.DeviceEvent! evt, uint timeoutMilliseconds) -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceEvent
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceEvent.IsCancelled.get -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceEvent.Signal() -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceIdentity
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceIdentity.DeviceIdentity() -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceLock
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceLock.Acquire() -> Cosmos.Kernel.HAL.DriverKit.DeviceLockScope
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceLockScope
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceLockScope.DeviceLockScope() -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceLockScope.Dispose() -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceMatch
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceMatch.DeviceMatch() -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceNode
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceNode.Access<T>() -> T!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceNode.Binding.get -> Cosmos.Kernel.HAL.DriverKit.DeviceBinding?
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceNode.Children.get -> System.Collections.Generic.IReadOnlyList<Cosmos.Kernel.HAL.DriverKit.DeviceNode!>!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceNode.Description.get -> string!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceNode.FaultCount.get -> int
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceNode.Identity.get -> Cosmos.Kernel.HAL.DriverKit.DeviceIdentity!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceNode.Interrupts.get -> System.Collections.Generic.IReadOnlyList<Cosmos.Kernel.HAL.DriverKit.InterruptSource!>!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceNode.LastFault.get -> string?
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceNode.LeakedResourceCount.get -> int
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceNode.Offers.get -> System.Collections.Generic.IReadOnlyList<Cosmos.Kernel.HAL.DriverKit.DeviceOffer>!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceNode.Parent.get -> Cosmos.Kernel.HAL.DriverKit.DeviceNode?
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceNode.Path.get -> string!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceNode.Resources.get -> System.Collections.Generic.IReadOnlyList<Cosmos.Kernel.HAL.DriverKit.DeviceResource>!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceNode.State.get -> Cosmos.Kernel.HAL.DriverKit.NodeState
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceNode.TryGetAccess<T>(out T? access) -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceOffer
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceOffer.DeviceOffer() -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceOffer.DriverName.get -> string!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceOffer.Outcome.get -> Cosmos.Kernel.HAL.DriverKit.ProbeOutcome
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceOffer.Priority.get -> int
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceOffer.Reason.get -> string?
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceOffer.ReleasedResourceCount.get -> int
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceOffer.Specificity.get -> int
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceRegion
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceRegion.As<T>() -> System.Span<T>
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceRegion.Caching.get -> Cosmos.Kernel.HAL.DriverKit.RegionCaching
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceRegion.Length.get -> ulong
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceRegion.Pointer.get -> byte*
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceRegion.Slice(ulong offset, ulong length) -> Cosmos.Kernel.HAL.DriverKit.DeviceRegion!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceRegion.Span.get -> System.Span<byte>
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceResource
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceResource.Base.get -> ulong
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceResource.DeviceResource() -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceResource.IsNone.get -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceResource.Kind.get -> Cosmos.Kernel.HAL.DriverKit.DeviceResourceKind
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceResource.Length.get -> ulong
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceResource.PhysicalBase.get -> ulong
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceResourceKind
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceResourceKind.MemoryWindow = 0 -> Cosmos.Kernel.HAL.DriverKit.DeviceResourceKind
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceResourceKind.None = 3 -> Cosmos.Kernel.HAL.DriverKit.DeviceResourceKind
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceResourceKind.PortRange = 1 -> Cosmos.Kernel.HAL.DriverKit.DeviceResourceKind
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DeviceResourceKind.RamWindow = 2 -> Cosmos.Kernel.HAL.DriverKit.DeviceResourceKind
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.DisplayMode
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.DisplayMode.BitsPerPixel.get -> int
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.DisplayMode.DisplayMode() -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.DisplayMode.DisplayMode(int width, int height, int pitch, int bitsPerPixel) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.DisplayMode.DisplayMode(int width, int height, int pitch, int bitsPerPixel, int refreshRate) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.DisplayMode.Height.get -> int
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.DisplayMode.IsEmpty.get -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.DisplayMode.Pitch.get -> int
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.DisplayMode.RefreshRate.get -> int
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.DisplayMode.Width.get -> int
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.DisplaySink
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.DisplaySink.ModeChanged() -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.IDisplay
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.IDisplay.Flush(int x, int y, int width, int height) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.IDisplay.Framebuffer.get -> Cosmos.Kernel.HAL.DriverKit.DeviceRegion?
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.IDisplay.Mode.get -> Cosmos.Kernel.HAL.DriverKit.Devices.DisplayMode
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.IDisplay.Name.get -> string!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.IDisplayModes
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.IDisplayModes.Modes.get -> System.ReadOnlySpan<Cosmos.Kernel.HAL.DriverKit.Devices.DisplayMode>
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.IDisplayModes.TrySetMode(int width, int height, int bitsPerPixel) -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.IHardwareCursor
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.IHardwareCursor.Set(int x, int y, bool visible) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.IHardwareCursor.TryDefine(int hotspotX, int hotspotY, int width, int height, System.ReadOnlySpan<uint> pixels) -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.IKeyboard
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.IKeyboard.Name.get -> string!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.IKeyboard.SetLeds(Cosmos.Kernel.HAL.DriverKit.Devices.KeyboardLeds leds) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.INetworkInterface
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.INetworkInterface.LinkUp.get -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.INetworkInterface.MacAddress.get -> Cosmos.Kernel.HAL.Interfaces.Devices.MACAddress!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.INetworkInterface.Name.get -> string!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.INetworkInterface.Transmit(System.ReadOnlySpan<byte> frame) -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.IPointer
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.IPointer.Name.get -> string!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.KeyboardLeds
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.KeyboardLeds.CapsLock = 4 -> Cosmos.Kernel.HAL.DriverKit.Devices.KeyboardLeds
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.KeyboardLeds.None = 0 -> Cosmos.Kernel.HAL.DriverKit.Devices.KeyboardLeds
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.KeyboardLeds.NumLock = 2 -> Cosmos.Kernel.HAL.DriverKit.Devices.KeyboardLeds
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.KeyboardLeds.ScrollLock = 1 -> Cosmos.Kernel.HAL.DriverKit.Devices.KeyboardLeds
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.KeyboardSink
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.KeyboardSink.Report(byte scanCode, bool released) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.NetworkSink
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.NetworkSink.LinkChanged(bool up) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.NetworkSink.Receive(System.ReadOnlySpan<byte> frame) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.PointerButtons
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.PointerButtons.Left = 1 -> Cosmos.Kernel.HAL.DriverKit.Devices.PointerButtons
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.PointerButtons.Middle = 4 -> Cosmos.Kernel.HAL.DriverKit.Devices.PointerButtons
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.PointerButtons.None = 0 -> Cosmos.Kernel.HAL.DriverKit.Devices.PointerButtons
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.PointerButtons.Right = 2 -> Cosmos.Kernel.HAL.DriverKit.Devices.PointerButtons
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.PointerSink
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.PointerSink.ReportAbsolute(int x, int y, Cosmos.Kernel.HAL.DriverKit.Devices.PointerButtons buttons) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Devices.PointerSink.ReportRelative(int deltaX, int deltaY, Cosmos.Kernel.HAL.DriverKit.Devices.PointerButtons buttons, int wheel) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DmaBuffer
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DmaBuffer.Length.get -> int
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DmaBuffer.PhysicalAddress.get -> ulong
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DmaBuffer.Region.get -> Cosmos.Kernel.HAL.DriverKit.DeviceRegion!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DmaBuffer.Span.get -> System.Span<byte>
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DmaConstraints
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DmaConstraints.Below4GiB.get -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DmaConstraints.DmaConstraints() -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Driver
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Driver.Driver() -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DriverAttribute
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DriverAttribute.Default.get -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DriverAttribute.Default.set -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DriverAttribute.DriverAttribute() -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DriverAttribute.Feature.get -> Cosmos.Kernel.HAL.DriverKit.DriverFeature
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DriverAttribute.Feature.set -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DriverFeature
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DriverFeature.Fat = 9 -> Cosmos.Kernel.HAL.DriverKit.DriverFeature
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DriverFeature.Graphics = 10 -> Cosmos.Kernel.HAL.DriverKit.DriverFeature
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DriverFeature.Interrupts = 1 -> Cosmos.Kernel.HAL.DriverKit.DriverFeature
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DriverFeature.Keyboard = 5 -> Cosmos.Kernel.HAL.DriverKit.DriverFeature
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DriverFeature.Mouse = 6 -> Cosmos.Kernel.HAL.DriverKit.DriverFeature
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DriverFeature.Network = 7 -> Cosmos.Kernel.HAL.DriverKit.DriverFeature
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DriverFeature.None = 0 -> Cosmos.Kernel.HAL.DriverKit.DriverFeature
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DriverFeature.Pci = 3 -> Cosmos.Kernel.HAL.DriverKit.DriverFeature
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DriverFeature.Scheduler = 11 -> Cosmos.Kernel.HAL.DriverKit.DriverFeature
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DriverFeature.Storage = 8 -> Cosmos.Kernel.HAL.DriverKit.DriverFeature
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DriverFeature.Timer = 4 -> Cosmos.Kernel.HAL.DriverKit.DriverFeature
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DriverFeature.Uart = 2 -> Cosmos.Kernel.HAL.DriverKit.DriverFeature
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DriverFeature.Usb = 12 -> Cosmos.Kernel.HAL.DriverKit.DriverFeature
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DriverRegistry
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DriverThread
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DriverThread.HasExited.get -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.DriverThread.Name.get -> string!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.InterruptContext
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.InterruptContext.Mask() -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.InterruptContext.Schedule(Cosmos.Kernel.HAL.DriverKit.WorkItem! item) -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.InterruptContext.Signal(Cosmos.Kernel.HAL.DriverKit.DeviceEvent! evt) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.InterruptHandle
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.InterruptHandle.IsMasked.get -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.InterruptHandle.Mask() -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.InterruptHandle.Source.get -> Cosmos.Kernel.HAL.DriverKit.InterruptSource!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.InterruptHandle.Unmask() -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.InterruptHandler
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.InterruptSource
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.InterruptSource.InterruptSource() -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.InterruptTrampoline
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.InterruptTrampoline.Invoke(bool synthetic) -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.InterruptTrampoline.Node.get -> Cosmos.Kernel.HAL.DriverKit.DeviceNode!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.NodeState
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.NodeState.Bound = 1 -> Cosmos.Kernel.HAL.DriverKit.NodeState
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.NodeState.Pending = 0 -> Cosmos.Kernel.HAL.DriverKit.NodeState
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.NodeState.Retracted = 3 -> Cosmos.Kernel.HAL.DriverKit.NodeState
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.NodeState.Unbound = 2 -> Cosmos.Kernel.HAL.DriverKit.NodeState
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciAccess
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciAccess.Bars.get -> System.ReadOnlySpan<Cosmos.Kernel.HAL.DriverKit.Pci.PciBar>
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciAccess.EnableBusMastering(bool enable) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciAccess.EnableIoSpace(bool enable) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciAccess.EnableMemorySpace(bool enable) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciAccess.FindCapability(byte capabilityId, byte after = 0) -> byte
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciAccess.InterruptLine.get -> byte
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciAccess.InterruptPin.get -> byte
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciAccess.IsMsiXCapable.get -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciAccess.MessageInterruptCount.get -> int
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciAccess.ReadConfig16(ushort offset) -> ushort
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciAccess.ReadConfig32(ushort offset) -> uint
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciAccess.ReadConfig8(ushort offset) -> byte
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciAccess.WriteConfig16(ushort offset, ushort value) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciAccess.WriteConfig32(ushort offset, uint value) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciAccess.WriteConfig8(ushort offset, byte value) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciBar
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciBar.Base.get -> ulong
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciBar.Index.get -> int
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciBar.Is64Bit.get -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciBar.IsAssigned.get -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciBar.IsIo.get -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciBar.IsPrefetchable.get -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciBar.Length.get -> ulong
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciBar.PciBar() -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciFunctionDescription
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciFunctionDescription.Access.get -> Cosmos.Kernel.HAL.DriverKit.Pci.PciAccess!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciFunctionDescription.Identity.get -> Cosmos.Kernel.HAL.DriverKit.Pci.PciIdentity!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciFunctionDescription.Interrupts.get -> Cosmos.Kernel.HAL.DriverKit.InterruptSource![]!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciFunctionDescription.PciFunctionDescription() -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciFunctionDescription.Resources.get -> Cosmos.Kernel.HAL.DriverKit.DeviceResource[]!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciHostAccess
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciHostAccess.EndBus.get -> byte
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciHostAccess.ReadConfig16(byte bus, byte device, byte function, ushort offset) -> ushort
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciHostAccess.ReadConfig32(byte bus, byte device, byte function, ushort offset) -> uint
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciHostAccess.ReadConfig8(byte bus, byte device, byte function, ushort offset) -> byte
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciHostAccess.Segment.get -> ushort
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciHostAccess.StartBus.get -> byte
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciHostAccess.TryDescribeFunction(byte bus, byte device, byte function, out Cosmos.Kernel.HAL.DriverKit.Pci.PciFunctionDescription description) -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciHostAccess.WriteConfig16(byte bus, byte device, byte function, ushort offset, ushort value) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciHostAccess.WriteConfig32(byte bus, byte device, byte function, ushort offset, uint value) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciHostAccess.WriteConfig8(byte bus, byte device, byte function, ushort offset, byte value) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciIdentity
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciIdentity.Bus.get -> byte
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciIdentity.ClassCode.get -> byte
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciIdentity.Device.get -> byte
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciIdentity.DeviceId.get -> ushort
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciIdentity.Function.get -> byte
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciIdentity.HeaderType.get -> byte
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciIdentity.ProgIf.get -> byte
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciIdentity.Revision.get -> byte
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciIdentity.Segment.get -> ushort
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciIdentity.Subclass.get -> byte
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciIdentity.SubsystemId.get -> ushort
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciIdentity.SubsystemVendorId.get -> ushort
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciIdentity.VendorId.get -> ushort
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciMatch
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Pci.PciMatch.PciMatch(ushort? vendorId = null, ushort? deviceId = null, ushort? subsystemVendorId = null, ushort? subsystemId = null, byte? classCode = null, byte? subclass = null, byte? progIf = null, byte? revision = null) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Platform.PlatformIdentity
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Platform.PlatformIdentity.Compatible.get -> System.Collections.Generic.IReadOnlyList<string!>!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Platform.PlatformIdentity.PlatformIdentity(string! address, System.Collections.Generic.IReadOnlyList<string!>! compatible) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Platform.PlatformMatch
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.ProbeOutcome
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.ProbeOutcome.Bound = 0 -> Cosmos.Kernel.HAL.DriverKit.ProbeOutcome
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.ProbeOutcome.Declined = 1 -> Cosmos.Kernel.HAL.DriverKit.ProbeOutcome
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.ProbeOutcome.Failed = 2 -> Cosmos.Kernel.HAL.DriverKit.ProbeOutcome
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.ProbeResult
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.ProbeResult.Outcome.get -> Cosmos.Kernel.HAL.DriverKit.ProbeOutcome
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.ProbeResult.ProbeResult() -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.ProbeResult.Reason.get -> string?
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.RegionCaching
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.RegionCaching.Device = 0 -> Cosmos.Kernel.HAL.DriverKit.RegionCaching
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.RegionCaching.Normal = 2 -> Cosmos.Kernel.HAL.DriverKit.RegionCaching
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.RegionCaching.WriteCombining = 1 -> Cosmos.Kernel.HAL.DriverKit.RegionCaching
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.RegisterWindow
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.RegisterWindow.Length.get -> ulong
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.RegisterWindow.Read16(ulong offset) -> ushort
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.RegisterWindow.Read32(ulong offset) -> uint
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.RegisterWindow.Read64(ulong offset) -> ulong
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.RegisterWindow.Read8(ulong offset) -> byte
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.RegisterWindow.Write16(ulong offset, ushort value) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.RegisterWindow.Write32(ulong offset, uint value) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.RegisterWindow.Write64(ulong offset, ulong value) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.RegisterWindow.Write8(ulong offset, byte value) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Synthetic.SyntheticAccess
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Synthetic.SyntheticAccess.Data.get -> byte[]!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Synthetic.SyntheticAccess.HasWindow.get -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Synthetic.SyntheticAccess.Window.get -> System.Span<byte>
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Synthetic.SyntheticBus
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Synthetic.SyntheticIdentity
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Synthetic.SyntheticIdentity.Key.get -> string!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Synthetic.SyntheticMatch
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioAccess
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioAccess.ConfigInterrupt.get -> Cosmos.Kernel.HAL.DriverKit.InterruptSource!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioAccess.DeviceType.get -> Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioAccess.Dispatch(int entry) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioAccess.InterruptEntryCount.get -> int
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioAccess.InterruptsForPublish() -> Cosmos.Kernel.HAL.DriverKit.InterruptSource![]!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioAccess.NegotiateFeatures(uint requestedLow, out uint negotiatedLow) -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioAccess.QueueInterrupt(ushort index) -> Cosmos.Kernel.HAL.DriverKit.InterruptSource!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioAccess.ReadConfig16(uint offset) -> ushort
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioAccess.ReadConfig32(uint offset) -> uint
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioAccess.ReadConfig8(uint offset) -> byte
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioAccess.Reset() -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioAccess.SetDriverOk() -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioAccess.SetFailed() -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioAccess.TryCreateQueue(Cosmos.Kernel.HAL.DriverKit.DeviceBinding! binding, ushort index, ushort preferredSize, out Cosmos.Kernel.HAL.DriverKit.Virtio.Virtqueue? queue) -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioAccess.Version1Negotiated.get -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioAccess.VirtioAccess(Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioTransport! transport) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioAccess.WriteConfig8(uint offset, byte value) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType.Balloon = 5 -> Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType.Block = 2 -> Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType.Console = 3 -> Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType.Crypto = 20 -> Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType.Entropy = 4 -> Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType.FileSystem = 26 -> Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType.Gpu = 16 -> Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType.Input = 18 -> Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType.Network = 1 -> Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType.Scsi = 8 -> Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType.Socket = 19 -> Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType.Sound = 25 -> Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioIdentity
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioIdentity.DeviceType.get -> Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioIdentity.Transport.get -> string!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioIdentity.TransportAddress.get -> string!
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioIdentity.VirtioIdentity(string! transport, string! transportAddress, Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType deviceType) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioInterruptStatus
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioInterruptStatus.Config = 2 -> Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioInterruptStatus
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioInterruptStatus.None = 0 -> Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioInterruptStatus
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioInterruptStatus.Queue = 1 -> Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioInterruptStatus
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioMatch
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioTransport
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioTransport.VirtioTransport() -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.Virtqueue
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.Virtqueue.DroppedUsedElements.get -> int
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.Virtqueue.FreeDescriptor(ushort index) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.Virtqueue.FreeDescriptorCount.get -> int
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.Virtqueue.HasUsed.get -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.Virtqueue.Index.get -> ushort
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.Virtqueue.Notify() -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.Virtqueue.SetDescriptor(ushort index, ulong physicalAddress, uint length, Cosmos.Kernel.HAL.DriverKit.Virtio.VirtqueueDescriptorFlags flags, ushort next = 0) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.Virtqueue.Size.get -> ushort
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.Virtqueue.Submit(ushort head) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.Virtqueue.TryAllocateDescriptor(out ushort index) -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.Virtqueue.TryTakeUsed(out ushort id, out uint length) -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtqueueDescriptorFlags
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtqueueDescriptorFlags.Indirect = 4 -> Cosmos.Kernel.HAL.DriverKit.Virtio.VirtqueueDescriptorFlags
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtqueueDescriptorFlags.Next = 1 -> Cosmos.Kernel.HAL.DriverKit.Virtio.VirtqueueDescriptorFlags
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtqueueDescriptorFlags.None = 0 -> Cosmos.Kernel.HAL.DriverKit.Virtio.VirtqueueDescriptorFlags
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtqueueDescriptorFlags.Write = 2 -> Cosmos.Kernel.HAL.DriverKit.Virtio.VirtqueueDescriptorFlags
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtqueueLayout
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtqueueLayout.Alignment.get -> uint
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtqueueLayout.AvailableRing.get -> ulong
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtqueueLayout.Base.get -> ulong
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtqueueLayout.DescriptorTable.get -> ulong
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtqueueLayout.Size.get -> ushort
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtqueueLayout.UsedRing.get -> ulong
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtqueueLayout.VirtqueueLayout() -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.Virtio.VirtqueueLayout.VirtqueueLayout(ushort size, ulong descriptorTable, ulong availableRing, ulong usedRing, ulong baseAddress, uint alignment) -> void
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.WorkItem
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.WorkItem.IsCancelled.get -> bool
+[COSMOS0003]Cosmos.Kernel.HAL.DriverKit.WorkItem.Schedule() -> bool
+[COSMOS0003]override Cosmos.Kernel.HAL.DriverKit.Pci.PciIdentity.Address.get -> string!
+[COSMOS0003]override Cosmos.Kernel.HAL.DriverKit.Pci.PciIdentity.BusName.get -> string!
+[COSMOS0003]override Cosmos.Kernel.HAL.DriverKit.Pci.PciIdentity.Describe() -> string!
+[COSMOS0003]override Cosmos.Kernel.HAL.DriverKit.Pci.PciMatch.Matches(Cosmos.Kernel.HAL.DriverKit.DeviceIdentity! identity) -> bool
+[COSMOS0003]override Cosmos.Kernel.HAL.DriverKit.Pci.PciMatch.Specificity.get -> int
+[COSMOS0003]override Cosmos.Kernel.HAL.DriverKit.Platform.PlatformIdentity.Address.get -> string!
+[COSMOS0003]override Cosmos.Kernel.HAL.DriverKit.Platform.PlatformIdentity.BusName.get -> string!
+[COSMOS0003]override Cosmos.Kernel.HAL.DriverKit.Platform.PlatformIdentity.Describe() -> string!
+[COSMOS0003]override Cosmos.Kernel.HAL.DriverKit.Platform.PlatformMatch.Matches(Cosmos.Kernel.HAL.DriverKit.DeviceIdentity! identity) -> bool
+[COSMOS0003]override Cosmos.Kernel.HAL.DriverKit.Platform.PlatformMatch.Specificity.get -> int
+[COSMOS0003]override Cosmos.Kernel.HAL.DriverKit.Synthetic.SyntheticIdentity.Address.get -> string!
+[COSMOS0003]override Cosmos.Kernel.HAL.DriverKit.Synthetic.SyntheticIdentity.BusName.get -> string!
+[COSMOS0003]override Cosmos.Kernel.HAL.DriverKit.Synthetic.SyntheticIdentity.Describe() -> string!
+[COSMOS0003]override Cosmos.Kernel.HAL.DriverKit.Synthetic.SyntheticMatch.Matches(Cosmos.Kernel.HAL.DriverKit.DeviceIdentity! identity) -> bool
+[COSMOS0003]override Cosmos.Kernel.HAL.DriverKit.Synthetic.SyntheticMatch.Specificity.get -> int
+[COSMOS0003]override Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioIdentity.Address.get -> string!
+[COSMOS0003]override Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioIdentity.BusName.get -> string!
+[COSMOS0003]override Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioIdentity.Describe() -> string!
+[COSMOS0003]override Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioMatch.Matches(Cosmos.Kernel.HAL.DriverKit.DeviceIdentity! identity) -> bool
+[COSMOS0003]override Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioMatch.Specificity.get -> int
+[COSMOS0003]static Cosmos.Kernel.HAL.DriverKit.DeviceResource.MemoryWindow(ulong physicalBase, ulong length) -> Cosmos.Kernel.HAL.DriverKit.DeviceResource
+[COSMOS0003]static Cosmos.Kernel.HAL.DriverKit.DeviceResource.None.get -> Cosmos.Kernel.HAL.DriverKit.DeviceResource
+[COSMOS0003]static Cosmos.Kernel.HAL.DriverKit.DeviceResource.PortRange(ushort basePort, ushort count) -> Cosmos.Kernel.HAL.DriverKit.DeviceResource
+[COSMOS0003]static Cosmos.Kernel.HAL.DriverKit.DeviceResource.RamWindow(ulong virtualBase, ulong physicalBase, ulong length) -> Cosmos.Kernel.HAL.DriverKit.DeviceResource
+[COSMOS0003]static Cosmos.Kernel.HAL.DriverKit.DmaBuffer.ReadBarrier() -> void
+[COSMOS0003]static Cosmos.Kernel.HAL.DriverKit.DmaBuffer.WriteBarrier() -> void
+[COSMOS0003]static Cosmos.Kernel.HAL.DriverKit.DmaConstraints.Addressable32Bit.get -> Cosmos.Kernel.HAL.DriverKit.DmaConstraints
+[COSMOS0003]static Cosmos.Kernel.HAL.DriverKit.DmaConstraints.None.get -> Cosmos.Kernel.HAL.DriverKit.DmaConstraints
+[COSMOS0003]static Cosmos.Kernel.HAL.DriverKit.DriverRegistry.Drivers.get -> System.Collections.Generic.IReadOnlyList<Cosmos.Kernel.HAL.DriverKit.Driver!>!
+[COSMOS0003]static Cosmos.Kernel.HAL.DriverKit.DriverRegistry.Register(Cosmos.Kernel.HAL.DriverKit.Driver! driver) -> void
+[COSMOS0003]static Cosmos.Kernel.HAL.DriverKit.Platform.PlatformMatch.Any() -> Cosmos.Kernel.HAL.DriverKit.Platform.PlatformMatch!
+[COSMOS0003]static Cosmos.Kernel.HAL.DriverKit.Platform.PlatformMatch.Compatible(string! value) -> Cosmos.Kernel.HAL.DriverKit.Platform.PlatformMatch!
+[COSMOS0003]static Cosmos.Kernel.HAL.DriverKit.ProbeResult.Bound.get -> Cosmos.Kernel.HAL.DriverKit.ProbeResult
+[COSMOS0003]static Cosmos.Kernel.HAL.DriverKit.ProbeResult.Declined(string! reason) -> Cosmos.Kernel.HAL.DriverKit.ProbeResult
+[COSMOS0003]static Cosmos.Kernel.HAL.DriverKit.ProbeResult.Failed(string! reason) -> Cosmos.Kernel.HAL.DriverKit.ProbeResult
+[COSMOS0003]static Cosmos.Kernel.HAL.DriverKit.Synthetic.SyntheticBus.Publish(string! key, byte[]! data, int interruptCount = 0, int windowBytes = 0) -> Cosmos.Kernel.HAL.DriverKit.DeviceNode!
+[COSMOS0003]static Cosmos.Kernel.HAL.DriverKit.Synthetic.SyntheticBus.RaiseInterrupt(Cosmos.Kernel.HAL.DriverKit.DeviceNode! node, int index) -> bool
+[COSMOS0003]static Cosmos.Kernel.HAL.DriverKit.Synthetic.SyntheticBus.Retract(Cosmos.Kernel.HAL.DriverKit.DeviceNode! node, bool hardwarePresent = false) -> void
+[COSMOS0003]static Cosmos.Kernel.HAL.DriverKit.Synthetic.SyntheticBus.WaitForQueuedJobs() -> void
+[COSMOS0003]static Cosmos.Kernel.HAL.DriverKit.Synthetic.SyntheticMatch.Any() -> Cosmos.Kernel.HAL.DriverKit.Synthetic.SyntheticMatch!
+[COSMOS0003]static Cosmos.Kernel.HAL.DriverKit.Synthetic.SyntheticMatch.Key(string! key) -> Cosmos.Kernel.HAL.DriverKit.Synthetic.SyntheticMatch!
+[COSMOS0003]static Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioMatch.Any() -> Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioMatch!
+[COSMOS0003]static Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioMatch.DeviceType(Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioDeviceType type) -> Cosmos.Kernel.HAL.DriverKit.Virtio.VirtioMatch!
+[COSMOS0003]virtual Cosmos.Kernel.HAL.DriverKit.Driver.OnDetach(Cosmos.Kernel.HAL.DriverKit.DeviceBinding! binding, Cosmos.Kernel.HAL.DriverKit.DetachReason reason) -> void
+[COSMOS0003]virtual Cosmos.Kernel.HAL.DriverKit.Driver.Priority.get -> int
+[COSMOS0003]virtual Cosmos.Kernel.HAL.DriverKit.InterruptHandler.Invoke(Cosmos.Kernel.HAL.DriverKit.InterruptContext! context) -> void

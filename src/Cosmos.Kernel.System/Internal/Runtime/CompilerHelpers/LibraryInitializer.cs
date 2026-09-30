@@ -8,6 +8,7 @@ using Cosmos.Kernel.HAL;
 using Cosmos.Kernel.HAL.Devices.Input;
 using Cosmos.Kernel.HAL.Interfaces;
 using Cosmos.Kernel.HAL.Interfaces.Devices;
+using Cosmos.Kernel.System.Graphics;
 using Cosmos.Kernel.System.Keyboard;
 using Cosmos.Kernel.System.Mouse;
 using Cosmos.Kernel.System.Network;
@@ -50,9 +51,14 @@ internal class LibraryInitializer
                         KeyboardManager.RegisterKeyboard(keyboard);
                     }
 
-                    // USB keyboards plugged in or pulled out from now on.
-                    UsbKeyboardDriver.KeyboardAttached = KeyboardManager.RegisterKeyboard;
-                    UsbKeyboardDriver.KeyboardDetached = KeyboardManager.UnregisterKeyboard;
+                    // USB keyboards plugged in or pulled out from now on. Nested
+                    // under USB's own switch so a kernel without USB never
+                    // references the USB keyboard driver and ILC trims it.
+                    if (CosmosFeatures.UsbEnabled)
+                    {
+                        UsbKeyboardDriver.KeyboardAttached = KeyboardManager.RegisterKeyboard;
+                        UsbKeyboardDriver.KeyboardDetached = KeyboardManager.UnregisterKeyboard;
+                    }
                 }
 
                 // Initialize Mouse Manager and register mouse
@@ -67,16 +73,21 @@ internal class LibraryInitializer
                     }
                 }
 
-                // Initialize Network Manager and register platform network device
+                // Initialize Network Manager; its consumer registers every
+                // interface a kit driver publishes once the driver stage runs.
                 if (NetworkManager.IsEnabled)
                 {
                     Serial.WriteString("[KERNEL]   - Initializing network manager...\n");
                     NetworkManager.Initialize();
-                    INetworkDevice? networkDevice = initializer.GetNetworkDevice();
-                    if (networkDevice is not null)
-                    {
-                        NetworkManager.RegisterDevice(networkDevice);
-                    }
+                }
+
+                // Initialize Display Manager; its consumer lists the firmware
+                // framebuffer the engine publishes at its start and every
+                // display a kit driver publishes once the driver stage runs.
+                if (DisplayManager.IsEnabled)
+                {
+                    Serial.WriteString("[KERNEL]   - Initializing display manager...\n");
+                    DisplayManager.Initialize();
                 }
 
                 // Initialize Storage Manager (manager-level state only)
@@ -90,8 +101,8 @@ internal class LibraryInitializer
             // Storage device registration runs OUTSIDE the
             // DisableInterruptsScope: ScanPartitions issues real I/O
             // (LBA 0 read for MBR/GPT detection), and interrupt-driven
-            // drivers like NVMe need IF=1 / DAIF.I=0 to receive
-            // completion IRQs. Disposing the scope only RESTORES the
+            // drivers like the xHCI host under a USB disk need IF=1 /
+            // DAIF.I=0 to receive completion IRQs. Disposing the scope only RESTORES the
             // prior state: on ARM64 IRQs were still masked from boot
             // at this point, so explicitly unmask before doing I/O.
             // The kernel re-enables IRQs again in Kernel.Start; this

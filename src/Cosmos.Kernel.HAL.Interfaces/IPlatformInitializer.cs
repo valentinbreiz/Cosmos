@@ -53,14 +53,21 @@ internal interface IPlatformInitializer
     void PreparePciMapping(ulong ecamBase);
 
     /// <summary>
-    /// Maps a physical MMIO region so the HHDM-virtual alias is accessible
-    /// with Device-memory attributes. Called by HAL device drivers (AHCI,
-    /// NVMe, etc.) before touching their BARs. ARM64 installs a Device
-    /// mapping in TTBR1 via <c>DeviceMapper.EnsureMapped</c>; x64's existing
-    /// page tables already cover MMIO so it's a no-op.
+    /// Maps the 2 MiB block containing a physical MMIO address so its
+    /// HHDM-virtual alias is accessible with Device-memory attributes.
+    /// Called by the driver kit's register mapper, by the HAL's xHCI driver
+    /// and by its MSI-X table mapper before touching their BARs. ARM64
+    /// installs a Device mapping in TTBR1 via
+    /// <c>DeviceMapper.EnsureMapped</c>; x64 maps only blocks above 4 GiB,
+    /// since Limine's page tables already cover the low 4 GiB.
     /// </summary>
     /// <param name="physBase">Physical base address of the MMIO region.</param>
-    void EnsureMmioMapped(ulong physBase);
+    /// <returns>
+    /// True when the block is mapped on return, including when it already
+    /// was; false when it could not be mapped and its HHDM alias must not be
+    /// dereferenced.
+    /// </returns>
+    bool EnsureMmioMapped(ulong physBase);
 
     /// <summary>
     /// Full data-synchronization barrier ordering prior normal-memory
@@ -87,6 +94,18 @@ internal interface IPlatformInitializer
     void InitializeHardware();
 
     /// <summary>
+    /// Publishes the root platform nodes of this machine into the driver
+    /// kit: the PCI host on both architectures, and on ARM64 one node per
+    /// occupied slot of the virt machine's virtio-mmio window, whatever the
+    /// feature switches and whether or not ACPI described anything. Called
+    /// once from the HAL library initializer after
+    /// <see cref="InitializeHardware"/>, with interrupts disabled; the nodes
+    /// are offered when the driver stage runs, and a node's lines are only
+    /// described here, connected by the driver that binds it.
+    /// </summary>
+    void PublishPlatformNodes();
+
+    /// <summary>
     /// Creates and initializes the platform timer device.
     /// </summary>
     ITimerDevice CreateTimer();
@@ -100,12 +119,6 @@ internal interface IPlatformInitializer
     /// Gets mouse devices available on this platform.
     /// </summary>
     IMouseDevice[] GetMouseDevices();
-
-    /// <summary>
-    /// Gets network devices available on this platform.
-    /// Returns null if no network device found.
-    /// </summary>
-    INetworkDevice? GetNetworkDevice();
 
     /// <summary>
     /// Gets the number of CPUs detected on this platform.

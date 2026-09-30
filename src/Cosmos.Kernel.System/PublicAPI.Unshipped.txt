@@ -1,6 +1,9 @@
 #nullable enable
 abstract Cosmos.Kernel.System.Graphics.Canvas3D.ClearScene(System.Drawing.Color color, float depth = 1) -> void
+abstract Cosmos.Kernel.System.Graphics.Canvas3D.CreateMeshCore(System.ReadOnlySpan<System.Numerics.Vector3> positions, System.ReadOnlySpan<uint> colors, System.ReadOnlySpan<System.Numerics.Vector2> uvs, Cosmos.Kernel.System.Graphics.Texture? texture, System.ReadOnlySpan<ushort> indices, Cosmos.Kernel.System.Graphics.MeshTopology topology) -> Cosmos.Kernel.System.Graphics.Mesh!
 abstract Cosmos.Kernel.System.Graphics.Canvas3D.CreateTexture(Cosmos.Kernel.System.Graphics.Image! image) -> Cosmos.Kernel.System.Graphics.Texture!
+abstract Cosmos.Kernel.System.Graphics.Canvas3D.DestroyMesh(Cosmos.Kernel.System.Graphics.Mesh! mesh) -> void
+abstract Cosmos.Kernel.System.Graphics.Canvas3D.DestroyTexture(Cosmos.Kernel.System.Graphics.Texture! texture) -> void
 abstract Cosmos.Kernel.System.Graphics.Canvas3D.DrawMesh(Cosmos.Kernel.System.Graphics.Mesh! mesh, in System.Numerics.Matrix4x4 world) -> void
 abstract Cosmos.Kernel.System.Kernel.Run() -> void
 abstract Cosmos.Kernel.System.Keyboard.ScanMapBase.InitializeKeys() -> void
@@ -15,6 +18,45 @@ const Cosmos.Kernel.System.Filesystems.Fat.FatBootSector.BootSectorLba = 0 -> ul
 const Cosmos.Kernel.System.Storage.Gpt.FirstUsableLba = 34 -> ulong
 const Cosmos.Kernel.System.Storage.Gpt.PrimaryHeaderLba = 1 -> ulong
 const Cosmos.Kernel.System.Storage.Gpt.ProtectiveMbrStartLba = 1 -> uint
+Cosmos.Kernel.System.Diagnostics.DeviceNodeInfo
+Cosmos.Kernel.System.Diagnostics.DeviceNodeInfo.BusName.get -> string!
+Cosmos.Kernel.System.Diagnostics.DeviceNodeInfo.ChildCount.get -> int
+Cosmos.Kernel.System.Diagnostics.DeviceNodeInfo.Description.get -> string!
+Cosmos.Kernel.System.Diagnostics.DeviceNodeInfo.DeviceNodeInfo() -> void
+Cosmos.Kernel.System.Diagnostics.DeviceNodeInfo.DriverName.get -> string?
+Cosmos.Kernel.System.Diagnostics.DeviceNodeInfo.FaultCount.get -> int
+Cosmos.Kernel.System.Diagnostics.DeviceNodeInfo.HeldResourceCount.get -> int
+Cosmos.Kernel.System.Diagnostics.DeviceNodeInfo.InterruptCount.get -> int
+Cosmos.Kernel.System.Diagnostics.DeviceNodeInfo.LastFault.get -> string?
+Cosmos.Kernel.System.Diagnostics.DeviceNodeInfo.LeakedResourceCount.get -> int
+Cosmos.Kernel.System.Diagnostics.DeviceNodeInfo.OfferCount.get -> int
+Cosmos.Kernel.System.Diagnostics.DeviceNodeInfo.ParentPath.get -> string?
+Cosmos.Kernel.System.Diagnostics.DeviceNodeInfo.Path.get -> string!
+Cosmos.Kernel.System.Diagnostics.DeviceNodeInfo.PublishedDeviceCount.get -> int
+Cosmos.Kernel.System.Diagnostics.DeviceNodeInfo.ResourceCount.get -> int
+Cosmos.Kernel.System.Diagnostics.DeviceNodeInfo.State.get -> Cosmos.Kernel.System.Diagnostics.DeviceNodeState
+Cosmos.Kernel.System.Diagnostics.DeviceNodeState
+Cosmos.Kernel.System.Diagnostics.DeviceNodeState.Bound = 1 -> Cosmos.Kernel.System.Diagnostics.DeviceNodeState
+Cosmos.Kernel.System.Diagnostics.DeviceNodeState.Pending = 0 -> Cosmos.Kernel.System.Diagnostics.DeviceNodeState
+Cosmos.Kernel.System.Diagnostics.DeviceNodeState.Retracted = 3 -> Cosmos.Kernel.System.Diagnostics.DeviceNodeState
+Cosmos.Kernel.System.Diagnostics.DeviceNodeState.Unbound = 2 -> Cosmos.Kernel.System.Diagnostics.DeviceNodeState
+Cosmos.Kernel.System.Diagnostics.DeviceOfferInfo
+Cosmos.Kernel.System.Diagnostics.DeviceOfferInfo.DeviceOfferInfo() -> void
+Cosmos.Kernel.System.Diagnostics.DeviceOfferInfo.DriverName.get -> string!
+Cosmos.Kernel.System.Diagnostics.DeviceOfferInfo.Outcome.get -> Cosmos.Kernel.System.Diagnostics.DeviceOfferOutcome
+Cosmos.Kernel.System.Diagnostics.DeviceOfferInfo.Priority.get -> int
+Cosmos.Kernel.System.Diagnostics.DeviceOfferInfo.Reason.get -> string?
+Cosmos.Kernel.System.Diagnostics.DeviceOfferInfo.ReleasedResourceCount.get -> int
+Cosmos.Kernel.System.Diagnostics.DeviceOfferInfo.Specificity.get -> int
+Cosmos.Kernel.System.Diagnostics.DeviceOfferOutcome
+Cosmos.Kernel.System.Diagnostics.DeviceOfferOutcome.Bound = 0 -> Cosmos.Kernel.System.Diagnostics.DeviceOfferOutcome
+Cosmos.Kernel.System.Diagnostics.DeviceOfferOutcome.Declined = 1 -> Cosmos.Kernel.System.Diagnostics.DeviceOfferOutcome
+Cosmos.Kernel.System.Diagnostics.DeviceOfferOutcome.Failed = 2 -> Cosmos.Kernel.System.Diagnostics.DeviceOfferOutcome
+Cosmos.Kernel.System.Diagnostics.DriverEntryInfo
+Cosmos.Kernel.System.Diagnostics.DriverEntryInfo.DriverEntryInfo() -> void
+Cosmos.Kernel.System.Diagnostics.DriverEntryInfo.Name.get -> string!
+Cosmos.Kernel.System.Diagnostics.DriverEntryInfo.Priority.get -> int
+Cosmos.Kernel.System.Diagnostics.DriverInfo
 Cosmos.Kernel.System.Diagnostics.KernelThreadInfo
 Cosmos.Kernel.System.Diagnostics.KernelThreadInfo.CpuId.get -> uint
 Cosmos.Kernel.System.Diagnostics.KernelThreadInfo.HasPriority.get -> bool
@@ -35,6 +77,20 @@ Cosmos.Kernel.System.Diagnostics.KernelThreadState.Running = 2 -> Cosmos.Kernel.
 Cosmos.Kernel.System.Diagnostics.KernelThreadState.Sleeping = 4 -> Cosmos.Kernel.System.Diagnostics.KernelThreadState
 Cosmos.Kernel.System.Diagnostics.Log
 Cosmos.Kernel.System.Diagnostics.MemoryInfo
+Cosmos.Kernel.System.Diagnostics.PublishedDeviceInfo
+Cosmos.Kernel.System.Diagnostics.PublishedDeviceInfo.DriverName.get -> string?
+Cosmos.Kernel.System.Diagnostics.PublishedDeviceInfo.IsConsumed.get -> bool
+Cosmos.Kernel.System.Diagnostics.PublishedDeviceInfo.IsWithdrawn.get -> bool
+Cosmos.Kernel.System.Diagnostics.PublishedDeviceInfo.Kind.get -> Cosmos.Kernel.System.Diagnostics.PublishedDeviceKind
+Cosmos.Kernel.System.Diagnostics.PublishedDeviceInfo.Name.get -> string!
+Cosmos.Kernel.System.Diagnostics.PublishedDeviceInfo.NodePath.get -> string?
+Cosmos.Kernel.System.Diagnostics.PublishedDeviceInfo.PublishedDeviceInfo() -> void
+Cosmos.Kernel.System.Diagnostics.PublishedDeviceKind
+Cosmos.Kernel.System.Diagnostics.PublishedDeviceKind.Block = 3 -> Cosmos.Kernel.System.Diagnostics.PublishedDeviceKind
+Cosmos.Kernel.System.Diagnostics.PublishedDeviceKind.Display = 4 -> Cosmos.Kernel.System.Diagnostics.PublishedDeviceKind
+Cosmos.Kernel.System.Diagnostics.PublishedDeviceKind.Keyboard = 0 -> Cosmos.Kernel.System.Diagnostics.PublishedDeviceKind
+Cosmos.Kernel.System.Diagnostics.PublishedDeviceKind.Network = 2 -> Cosmos.Kernel.System.Diagnostics.PublishedDeviceKind
+Cosmos.Kernel.System.Diagnostics.PublishedDeviceKind.Pointer = 1 -> Cosmos.Kernel.System.Diagnostics.PublishedDeviceKind
 Cosmos.Kernel.System.Diagnostics.SchedulerInfo
 Cosmos.Kernel.System.Diagnostics.ThreadKillResult
 Cosmos.Kernel.System.Diagnostics.ThreadKillResult.Killed = 1 -> Cosmos.Kernel.System.Diagnostics.ThreadKillResult
@@ -123,8 +179,7 @@ Cosmos.Kernel.System.Graphics.Camera3D.Target.init -> void
 Cosmos.Kernel.System.Graphics.Camera3D.Up.get -> System.Numerics.Vector3
 Cosmos.Kernel.System.Graphics.Camera3D.Up.init -> void
 Cosmos.Kernel.System.Graphics.Canvas
-Cosmos.Kernel.System.Graphics.Canvas.Canvas() -> void
-Cosmos.Kernel.System.Graphics.Canvas.Canvas(Cosmos.Kernel.System.Graphics.Mode mode) -> void
+Cosmos.Kernel.System.Graphics.Canvas.Canvas(Cosmos.Kernel.System.Graphics.DisplayDevice! display) -> void
 Cosmos.Kernel.System.Graphics.Canvas.Canvas(int width, int height, Cosmos.Kernel.System.Graphics.ColorDepth colorDepth = Cosmos.Kernel.System.Graphics.ColorDepth.ColorDepth32) -> void
 Cosmos.Kernel.System.Graphics.Canvas.CheckIfModeIsValid(Cosmos.Kernel.System.Graphics.Mode mode) -> bool
 Cosmos.Kernel.System.Graphics.Canvas.Clear() -> void
@@ -137,8 +192,11 @@ Cosmos.Kernel.System.Graphics.Canvas.Width.get -> int
 Cosmos.Kernel.System.Graphics.Canvas3D
 Cosmos.Kernel.System.Graphics.Canvas3D.Camera.get -> Cosmos.Kernel.System.Graphics.Camera3D
 Cosmos.Kernel.System.Graphics.Canvas3D.Camera.set -> void
+Cosmos.Kernel.System.Graphics.Canvas3D.Canvas3D(Cosmos.Kernel.System.Graphics.DisplayDevice! display) -> void
 Cosmos.Kernel.System.Graphics.Canvas3D.CreateMesh(System.ReadOnlySpan<System.Numerics.Vector3> positions, System.ReadOnlySpan<System.Numerics.Vector2> uvs, Cosmos.Kernel.System.Graphics.Texture! texture, System.ReadOnlySpan<ushort> indices) -> Cosmos.Kernel.System.Graphics.Mesh!
 Cosmos.Kernel.System.Graphics.Canvas3D.CreateMesh(System.ReadOnlySpan<System.Numerics.Vector3> positions, System.ReadOnlySpan<uint> colors, System.ReadOnlySpan<ushort> indices) -> Cosmos.Kernel.System.Graphics.Mesh!
+Cosmos.Kernel.System.Graphics.Canvas3D.CreateMeshHandle(int vertexCount, int indexCount, Cosmos.Kernel.System.Graphics.Texture? texture, Cosmos.Kernel.System.Graphics.MeshTopology topology, object? driverData) -> Cosmos.Kernel.System.Graphics.Mesh!
+Cosmos.Kernel.System.Graphics.Canvas3D.CreateTextureHandle(int width, int height, object? driverData) -> Cosmos.Kernel.System.Graphics.Texture!
 Cosmos.Kernel.System.Graphics.Canvas3D.DrawCube(System.Numerics.Vector3 position, System.Numerics.Vector3 size, System.Drawing.Color color) -> void
 Cosmos.Kernel.System.Graphics.Canvas3D.DrawGrid(int slices, float spacing, System.Drawing.Color color) -> void
 Cosmos.Kernel.System.Graphics.Canvas3D.DrawLine3D(System.Numerics.Vector3 start, System.Numerics.Vector3 end, System.Drawing.Color color) -> void
@@ -152,6 +210,19 @@ Cosmos.Kernel.System.Graphics.ColorDepth.ColorDepth8 = 8 -> Cosmos.Kernel.System
 Cosmos.Kernel.System.Graphics.ColorOrder
 Cosmos.Kernel.System.Graphics.ColorOrder.BGR = 1 -> Cosmos.Kernel.System.Graphics.ColorOrder
 Cosmos.Kernel.System.Graphics.ColorOrder.RGB = 0 -> Cosmos.Kernel.System.Graphics.ColorOrder
+Cosmos.Kernel.System.Graphics.DisplayDevice
+Cosmos.Kernel.System.Graphics.DisplayDevice.BitsPerPixel.get -> int
+Cosmos.Kernel.System.Graphics.DisplayDevice.DriverName.get -> string!
+Cosmos.Kernel.System.Graphics.DisplayDevice.Height.get -> int
+Cosmos.Kernel.System.Graphics.DisplayDevice.IsFirmware.get -> bool
+Cosmos.Kernel.System.Graphics.DisplayDevice.IsWithdrawn.get -> bool
+Cosmos.Kernel.System.Graphics.DisplayDevice.Name.get -> string!
+Cosmos.Kernel.System.Graphics.DisplayDevice.NodePath.get -> string?
+Cosmos.Kernel.System.Graphics.DisplayDevice.Pitch.get -> int
+Cosmos.Kernel.System.Graphics.DisplayDevice.RefreshRate.get -> int
+Cosmos.Kernel.System.Graphics.DisplayDevice.TryGetFacet<T>(out T? facet) -> bool
+Cosmos.Kernel.System.Graphics.DisplayDevice.Width.get -> int
+Cosmos.Kernel.System.Graphics.DisplayManager
 Cosmos.Kernel.System.Graphics.Fonts.Font
 Cosmos.Kernel.System.Graphics.Fonts.Font.ConvertByteToBitAddress(byte byteToConvert, int bitToReturn) -> bool
 Cosmos.Kernel.System.Graphics.Fonts.Font.Data.get -> byte[]!
@@ -190,8 +261,14 @@ Cosmos.Kernel.System.Graphics.KernelConsole.Rows.get -> int
 Cosmos.Kernel.System.Graphics.Mesh
 Cosmos.Kernel.System.Graphics.Mesh.Dispose() -> void
 Cosmos.Kernel.System.Graphics.Mesh.IndexCount.get -> int
+Cosmos.Kernel.System.Graphics.Mesh.IsDisposed.get -> bool
+Cosmos.Kernel.System.Graphics.Mesh.Owner.get -> Cosmos.Kernel.System.Graphics.Canvas3D!
 Cosmos.Kernel.System.Graphics.Mesh.Texture.get -> Cosmos.Kernel.System.Graphics.Texture?
+Cosmos.Kernel.System.Graphics.Mesh.Topology.get -> Cosmos.Kernel.System.Graphics.MeshTopology
 Cosmos.Kernel.System.Graphics.Mesh.VertexCount.get -> int
+Cosmos.Kernel.System.Graphics.MeshTopology
+Cosmos.Kernel.System.Graphics.MeshTopology.Lines = 1 -> Cosmos.Kernel.System.Graphics.MeshTopology
+Cosmos.Kernel.System.Graphics.MeshTopology.Triangles = 0 -> Cosmos.Kernel.System.Graphics.MeshTopology
 Cosmos.Kernel.System.Graphics.Mode
 Cosmos.Kernel.System.Graphics.Mode.ColorDepth.get -> Cosmos.Kernel.System.Graphics.ColorDepth
 Cosmos.Kernel.System.Graphics.Mode.CompareTo(Cosmos.Kernel.System.Graphics.Mode other) -> int
@@ -207,6 +284,8 @@ Cosmos.Kernel.System.Graphics.Png.Png(System.IO.Stream! stream) -> void
 Cosmos.Kernel.System.Graphics.Texture
 Cosmos.Kernel.System.Graphics.Texture.Dispose() -> void
 Cosmos.Kernel.System.Graphics.Texture.Height.get -> int
+Cosmos.Kernel.System.Graphics.Texture.IsDisposed.get -> bool
+Cosmos.Kernel.System.Graphics.Texture.Owner.get -> Cosmos.Kernel.System.Graphics.Canvas3D!
 Cosmos.Kernel.System.Graphics.Texture.Width.get -> int
 Cosmos.Kernel.System.Kernel
 Cosmos.Kernel.System.Kernel.Kernel() -> void
@@ -617,6 +696,16 @@ override Cosmos.Kernel.System.Network.IPv6.Address6.ToString() -> string!
 override Cosmos.Kernel.System.Network.MaskedAddress.Equals(object! obj) -> bool
 override Cosmos.Kernel.System.Network.NetworkAdapter.Equals(object? obj) -> bool
 override Cosmos.Kernel.System.Network.NetworkAdapter.GetHashCode() -> int
+static Cosmos.Kernel.System.Diagnostics.DriverInfo.DeviceCount.get -> int
+static Cosmos.Kernel.System.Diagnostics.DriverInfo.DriverCount.get -> int
+static Cosmos.Kernel.System.Diagnostics.DriverInfo.GetTotalHeldResourceCount() -> int
+static Cosmos.Kernel.System.Diagnostics.DriverInfo.HasWorker.get -> bool
+static Cosmos.Kernel.System.Diagnostics.DriverInfo.IsStarted.get -> bool
+static Cosmos.Kernel.System.Diagnostics.DriverInfo.NodeCount.get -> int
+static Cosmos.Kernel.System.Diagnostics.DriverInfo.TryGetDevice(int index, out Cosmos.Kernel.System.Diagnostics.PublishedDeviceInfo info) -> bool
+static Cosmos.Kernel.System.Diagnostics.DriverInfo.TryGetDriver(int index, out Cosmos.Kernel.System.Diagnostics.DriverEntryInfo info) -> bool
+static Cosmos.Kernel.System.Diagnostics.DriverInfo.TryGetNode(int index, out Cosmos.Kernel.System.Diagnostics.DeviceNodeInfo info) -> bool
+static Cosmos.Kernel.System.Diagnostics.DriverInfo.TryGetOffer(int nodeIndex, int offerIndex, out Cosmos.Kernel.System.Diagnostics.DeviceOfferInfo info) -> bool
 static Cosmos.Kernel.System.Diagnostics.Log.Write(params System.ReadOnlySpan<object?> args) -> void
 static Cosmos.Kernel.System.Diagnostics.Log.WriteBytes(System.ReadOnlySpan<byte> bytes) -> void
 static Cosmos.Kernel.System.Diagnostics.Log.WriteHex(uint number) -> void
@@ -658,6 +747,14 @@ static Cosmos.Kernel.System.Graphics.Canvas.AlphaBlend(System.Drawing.Color to, 
 static Cosmos.Kernel.System.Graphics.Canvas.DisableFullScreen() -> void
 static Cosmos.Kernel.System.Graphics.Canvas.GetFullScreen() -> Cosmos.Kernel.System.Graphics.Canvas!
 static Cosmos.Kernel.System.Graphics.Canvas.GetFullScreen(Cosmos.Kernel.System.Graphics.Mode mode) -> Cosmos.Kernel.System.Graphics.Canvas!
+static Cosmos.Kernel.System.Graphics.Canvas3D.DriverDataOf(Cosmos.Kernel.System.Graphics.Mesh! mesh) -> object?
+static Cosmos.Kernel.System.Graphics.Canvas3D.DriverDataOf(Cosmos.Kernel.System.Graphics.Texture! texture) -> object?
+static Cosmos.Kernel.System.Graphics.Canvas3D.SetDriverData(Cosmos.Kernel.System.Graphics.Mesh! mesh, object? data) -> void
+static Cosmos.Kernel.System.Graphics.Canvas3D.SetDriverData(Cosmos.Kernel.System.Graphics.Texture! texture, object? data) -> void
+static Cosmos.Kernel.System.Graphics.DisplayManager.Count.get -> int
+static Cosmos.Kernel.System.Graphics.DisplayManager.IsEnabled.get -> bool
+static Cosmos.Kernel.System.Graphics.DisplayManager.Primary.get -> Cosmos.Kernel.System.Graphics.DisplayDevice?
+static Cosmos.Kernel.System.Graphics.DisplayManager.TryGet(int index, out Cosmos.Kernel.System.Graphics.DisplayDevice? display) -> bool
 static Cosmos.Kernel.System.Graphics.Fonts.PCScreenFont.DefaultFont.get -> Cosmos.Kernel.System.Graphics.Fonts.PCScreenFont!
 static Cosmos.Kernel.System.Graphics.Fonts.PCScreenFont.LoadFont(byte[]! fontData) -> Cosmos.Kernel.System.Graphics.Fonts.PCScreenFont!
 static Cosmos.Kernel.System.Graphics.KernelConsole.Default.get -> Cosmos.Kernel.System.Graphics.KernelConsole?
@@ -680,6 +777,7 @@ static Cosmos.Kernel.System.KernelFeatures.Scheduler.get -> bool
 static Cosmos.Kernel.System.KernelFeatures.Storage.get -> bool
 static Cosmos.Kernel.System.KernelFeatures.Timer.get -> bool
 static Cosmos.Kernel.System.KernelFeatures.Uart.get -> bool
+static Cosmos.Kernel.System.KernelFeatures.Usb.get -> bool
 static Cosmos.Kernel.System.Keyboard.KeyboardManager.AltPressed.get -> bool
 static Cosmos.Kernel.System.Keyboard.KeyboardManager.CapsLock.get -> bool
 static Cosmos.Kernel.System.Keyboard.KeyboardManager.ControlPressed.get -> bool
@@ -819,6 +917,7 @@ virtual Cosmos.Kernel.System.Graphics.Canvas.Clear(System.Drawing.Color color) -
 virtual Cosmos.Kernel.System.Graphics.Canvas.CopyPixels(int srcX, int srcY, int dstX, int dstY, int width, int height) -> void
 virtual Cosmos.Kernel.System.Graphics.Canvas.CroppedDrawImage(Cosmos.Kernel.System.Graphics.Image! image, int x, int y, int maxWidth, int maxHeight, bool preventOffBoundPixels = true) -> void
 virtual Cosmos.Kernel.System.Graphics.Canvas.DefaultGraphicsMode.get -> Cosmos.Kernel.System.Graphics.Mode
+virtual Cosmos.Kernel.System.Graphics.Canvas.Disable() -> void
 virtual Cosmos.Kernel.System.Graphics.Canvas.Display() -> void
 virtual Cosmos.Kernel.System.Graphics.Canvas.DrawArc(System.Drawing.Color color, int xCenter, int yCenter, int xR, int yR, int startAngle = 0, int endAngle = 360) -> void
 virtual Cosmos.Kernel.System.Graphics.Canvas.DrawArray(int[]! colors, int x, int y, int width, int height) -> void
@@ -849,7 +948,9 @@ virtual Cosmos.Kernel.System.Graphics.Canvas.Mode.get -> Cosmos.Kernel.System.Gr
 virtual Cosmos.Kernel.System.Graphics.Canvas.Mode.set -> void
 virtual Cosmos.Kernel.System.Graphics.Canvas.MovePixel(int x, int y, int newX, int newY) -> void
 virtual Cosmos.Kernel.System.Graphics.Canvas.Name.get -> string!
+virtual Cosmos.Kernel.System.Graphics.Canvas.OnModeChanged() -> void
 virtual Cosmos.Kernel.System.Graphics.Canvas.RefreshRate.get -> int
+virtual Cosmos.Kernel.System.Graphics.Canvas3D.OnCameraChanged() -> void
 virtual Cosmos.Kernel.System.Graphics.Fonts.Font.GetAdvance(char c) -> int
 virtual Cosmos.Kernel.System.Graphics.Fonts.Font.GetLineHeight() -> int
 virtual Cosmos.Kernel.System.Graphics.Fonts.Font.GetMaxAdvance() -> int
@@ -1056,3 +1157,5 @@ virtual Cosmos.Kernel.System.Kernel.Start() -> void
 [COSMOS0002]override Cosmos.Kernel.System.Network.UDP.UdpPacket.ToString() -> string!
 [COSMOS0002]static Cosmos.Kernel.System.Network.NetworkStack.HandlePacket(byte[]! packetData, int length) -> void
 [COSMOS0002]static Cosmos.Kernel.System.Network.NetworkStack.Send(Cosmos.Kernel.System.Network.InternetPacket! packet) -> bool
+[COSMOS0003]Cosmos.Kernel.System.Graphics.ICanvas3DFactory
+[COSMOS0003]Cosmos.Kernel.System.Graphics.ICanvas3DFactory.CreateCanvas3D(Cosmos.Kernel.System.Graphics.DisplayDevice! display) -> Cosmos.Kernel.System.Graphics.Canvas3D!

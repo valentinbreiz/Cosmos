@@ -28,10 +28,11 @@ This document establishes the coding style and architecture patterns for Cosmos 
 
 ### Layer Dependency Rules
 
-The project is split into strict layers. Dependencies flow **downward only**. These rules are **enforced at compile time** by the `LayerAnalyzer` Roslyn analyzer in `Cosmos.Build.Analyzer.Patcher`.
+The project is split into strict layers. Dependencies flow **downward only**. These rules are **enforced at compile time** by the `LayerAnalyzer` Roslyn analyzer in `Cosmos.Build.Analyzer.Patcher`, which judges a project on the types and members its code names, not on the reference list restore builds, and reports each assembly used across a boundary once, at its first use. A user kernel, and a driver assembly (`<CosmosDriverAssembly>true</CosmosDriverAssembly>`, see [Public API Tracking](public-api.md)), may also name what `Cosmos.Kernel.HAL` offers for the driver kit seam and the device contracts in `Cosmos.Kernel.HAL.Interfaces`.
 
 ```
 User Kernel (DevKernel, test kernels)
+Cosmos.Kernel.Drivers (the shipped drivers, a driver assembly held to the User layer)
     └── Cosmos.Kernel.System        ← high-level OS APIs (Console, Graphics, Network)
          └── Cosmos.Kernel.HAL      ← hardware abstraction (shared logic)
               ├── Cosmos.Kernel.HAL.X64        ← x64-specific HAL implementations
@@ -47,7 +48,8 @@ For the full dependency graph, project descriptions, and rules, see [Kernel Proj
 
 ### When to Create a New Project
 
-- New hardware device category → new interface in `Cosmos.Kernel.HAL.Interfaces`, implementations in `Cosmos.Kernel.HAL.X64`/`Cosmos.Kernel.HAL.ARM64`. Cross-platform HAL devices go to `Cosmos.Kernel.HAL`.
+- A driver for a device the driver kit's buses reach (a PCI function today) → a `[Driver]` class in `Cosmos.Kernel.Drivers`, written over the public seam ([Writing a Driver](../user/drivers.md)); the aggregator carries the package, so every kernel gets it.
+- New hardware device category the kit does not cover yet → new interface in `Cosmos.Kernel.HAL.Interfaces`, implementations in `Cosmos.Kernel.HAL.X64`/`Cosmos.Kernel.HAL.ARM64`. Cross-platform HAL devices go to `Cosmos.Kernel.HAL`.
 - New OS-level feature, user API exposed → in `Cosmos.Kernel.System`.
 - New low-level runtime concern → in `Cosmos.Kernel.Core`.
 
@@ -141,11 +143,12 @@ This is only allowed now in `Cosmos.Kernel.Core` but this may change in the futu
 
 There is no separator convention to follow. Four garbage-collector files carry
 `// --- Section Name ---` headers, written three weeks before this page was,
-and one driver file was later written to match them. The other 353 non-vendored
-files in the four tracked assemblies do not, no file has ever been converted,
-and no analyzer checks it. Neither is there a member order to describe: across
-131 types with three or more kinds of member there are 93 distinct orders, and
-the best-fitting single order covers 43 of them.
+and the display driver files in `Cosmos.Kernel.Drivers` were later written to
+match them. The other 353 non-vendored files in the four tracked assemblies do
+not, no file has ever been converted, and no analyzer checks it. Neither is
+there a member order to describe: across 131 types with three or more kinds of
+member there are 93 distinct orders, and the best-fitting single order covers
+43 of them.
 
 Two orderings are still worth following, because a reader checks them inside
 one screen:
@@ -156,8 +159,8 @@ one screen:
   static factory sits with the constructors it stands in for.
 
 If you want a model for the full separator form in a new file,
-`Cosmos.Kernel.HAL/Devices/Network/VirtioNet.cs` is the one file that
-demonstrates it. Do not convert an existing file to it.
+`Cosmos.Kernel.Drivers/VirtioGpuDriver.cs` is the file that demonstrates it.
+Do not convert an existing file to it.
 
 ### Using Directives
 
@@ -354,7 +357,6 @@ internal class X64PlatformInitializer : IPlatformInitializer
     public ITimerDevice CreateTimer() => new X64Timer();
     public IKeyboardDevice[] GetKeyboardDevices() => [new PS2Keyboard()];
     public IMouseDevice[] GetMouseDevices() => [new PS2Mouse()];
-    public INetworkDevice? GetNetworkDevice() => /* PCI probe */ null;
     public uint GetCpuCount() => /* ACPI/MADT */ 1;
 
     public void InitializeHardware()
@@ -370,6 +372,8 @@ internal class X64PlatformInitializer : IPlatformInitializer
 ```
 
 ### Adding a New Device
+
+For a device the driver kit reaches (a PCI function today), write a `[Driver]` class in `Cosmos.Kernel.Drivers` over the kit and publish the device through its binding; the steps below are for a device the kit does not cover yet.
 
 1. Define the interface in `Cosmos.Kernel.HAL.Interfaces/Devices/`.
 2. Implement in `Cosmos.Kernel.HAL.X64/` and `Cosmos.Kernel.HAL.ARM64/`.
@@ -803,7 +807,7 @@ private static readonly ArrayPool<byte> s_arrayPool = ArrayPool<byte>.Shared;
 public static KernelConsole? Default { get; private set; }
 ```
 
-Three limits on the last two. `readonly` on a field of a mutable struct type (`SpinLock`) is wrong: every method call would act on a defensive copy, and the lock would never be taken. The analyzer behind `dotnet_style_readonly_field` does not know which struct methods mutate, so its suggestion is taken for reference types and for structs with no mutating members only. A field a plug reaches by name (`[FieldAccess]`) stays a field: an auto-property's backing field has a compiler-generated name. And a static initializer that allocates is a class constructor, which runs on first touch through a lock that needs a current thread: a type read during device bring-up (`MACAddress.None` in the virtio-net driver) keeps its lazily filled statics, with a comment saying why.
+Three limits on the last two. `readonly` on a field of a mutable struct type (`SpinLock`) is wrong: every method call would act on a defensive copy, and the lock would never be taken. The analyzer behind `dotnet_style_readonly_field` does not know which struct methods mutate, so its suggestion is taken for reference types and for structs with no mutating members only. A field a plug reaches by name (`[FieldAccess]`) stays a field: an auto-property's backing field has a compiler-generated name. And a static initializer that allocates is a class constructor, which runs on first touch through a lock that needs a current thread: a type reachable from device bring-up (`MACAddress`, whose `None` and `Broadcast` any driver may read) keeps its lazily filled statics, with a comment saying why.
 
 ### Avoid
 
