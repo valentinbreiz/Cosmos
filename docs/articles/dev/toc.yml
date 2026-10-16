@@ -22,6 +22,8 @@
   href: scheduler.md
 - name: Scheduler - Glossary
   href: scheduler-glossary.md
+- name: Scheduler - SMP Design Proposal
+  href: scheduler-smp.md
 - name: Kernel Compilation Steps
   href: build/kernel-compilation-steps.md
 - name: Cosmos.Build.Asm
